@@ -6,8 +6,6 @@ kubectl get pods -o wide --show-labels
   141  kubectl get pods -o wide
 
   143  kubectl get pods -o wide
-
-  145  kubectl run prod-redis --image=redis:alpine --dry-run=client -o yaml > prod-redis.yaml
   146  kubectl run prod-redis --image=redis:alpine --dry-run=client -o yaml > prod-redis.yaml
   147  vim prod-redis.yaml 
   148  kubectl create -f prod-redis.yaml

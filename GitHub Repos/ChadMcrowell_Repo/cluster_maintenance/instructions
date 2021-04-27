@@ -1,0 +1,39 @@
+#Drain a node for maintenance named node1.mylabserver.com
+
+kubectl drain node node1.mylabserver.com --force --ignore-daemonsets=false
+
+#Put the node node1.mylabserver.com back into service, so pods can be scheduled to it
+
+kubectl uncordon node1.mylabserver.com
+
+#Updgrade kubeadm to version 1.18.6
+
+apt update
+apt-cache madison kubeadm # find the latest 1.18 version in the list
+                          # it should look like 1.18.x-00, where x is the latest patch
+
+apt-mark unhold kubeadm && \
+apt-get update && apt-get install -y kubeadm=1.18.6-00 && \
+apt-mark hold kubeadm
+
+#verify the downloaded version
+kubeadm version
+
+#verify the upgrade plan
+kubeadm upgrade plan
+
+#apply the upgrade
+sudo kubeadm upgrade apply v1.18.6
+
+#update kubelet and kubectl to version 1.18.6
+apt-mark unhold kubelet kubectl && \
+    apt-get update && apt-get install -y kubelet=1.18.6-00 kubectl=1.18.6-00 && \
+    apt-mark hold kubelet kubectl
+
+#restart the kubelet on the node
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+
+#upgrade the kubelet on a worker node
+
+sudo kubeadm upgrade node #ensure kubeadm upgraded on node using earlier command

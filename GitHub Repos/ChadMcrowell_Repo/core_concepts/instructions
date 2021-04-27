@@ -1,0 +1,36 @@
+#setup autocomplete for k8s commands (see cheat sheet)
+
+source <(kubectl completion bash)
+echo "source <(kubectl completion bash)" >> ~/.bashrc
+
+#show the kubeconfig settings
+
+kubectl config view
+
+#use multiple kubeconfigs
+
+KUBECONFIG=~/.kube/config:~/.kube/kubconfig2:~/.kube/kubeconfig3
+
+kubectl config set-context --current --namespace=<insert-namespace-name-here>
+
+#set a context using a specific username and namespace
+kubectl config set-context --user=<username> --namespace=<namespace>
+
+to use the context run kubectl config use-context <context>
+
+#list all the services in the kube-system namespace
+
+kubectl get svc -n kube-system
+
+#get pods on all namespace
+
+kubectl get pods --all-nameaspaeces
+
+#get all pods in a namespace with additional details
+
+kubectl get pods -n <namespace> -o wide
+
+#list a deployment
+
+kubectl get deployment <deployment name>
+
